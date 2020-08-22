@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -16,7 +16,7 @@ import EventModal from "./EventModal";
 import EventForm from "./EventForm";
 import fetchAll from "../helpers/fetchAll"; // returns data after PATCH or POST depending upon endpoint
 import returnUnauthorized from "../helpers/returnUnauthorized";
-import { eventsEndPoint } from "../helpers/endpoints"; // const endpoints
+//import { eventsEndPoint } from "../helpers/endpoints"; // const endpoints
 import cloudName from "../config/cloudName"; // for Cloudinary
 
 //const uri = process.env.REACT_APP_URL;
@@ -76,7 +76,7 @@ function CardList({ user, users, events, ...props }) {
 
     if (window.confirm("Confirm removal?")) {
       try {
-        const query = await fetch("/api/v1/events/" + event.id, {
+        const query = await fetch("/v1/events/" + event.id, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -298,7 +298,7 @@ function CardList({ user, users, events, ...props }) {
         owner: event.user.email,
         event: event,
       });
-      await fetch("/api/v1/pushDemand", {
+      await fetch("/v1/pushDemand", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -307,7 +307,7 @@ function CardList({ user, users, events, ...props }) {
         body: demand,
       });
       window.alert("Mail sent");
-      const responseEvents = await fetch(eventsEndPoint);
+      const responseEvents = await fetch("v1/events");
       if (responseEvents.ok) {
         const dataEvents = await responseEvents.json();
         props.onhandleUpdateEvents(dataEvents);

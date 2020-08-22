@@ -4,7 +4,7 @@ import returnUnauthorized from "./returnUnauthorized";
 
 async function fetchAll({ method, index, body, token }) {
   try {
-    const query = await fetch("api/v1/events/" + index, {
+    const query = await fetch("/v1/events/" + index, {
       method: method,
       headers: {
         Authorization: "Bearer " + token, //localStorage.getItem("jwt"),
@@ -18,7 +18,7 @@ async function fetchAll({ method, index, body, token }) {
       if (response.status === 401) {
         return returnUnauthorized();
       }
-      const all = await fetch("api/v1/events");
+      const all = await fetch("/v1/events");
       return await all.json();
     } else {
       returnUnauthorized();

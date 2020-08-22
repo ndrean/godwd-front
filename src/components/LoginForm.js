@@ -60,7 +60,7 @@ function LoginForm({ user, ...props }) {
     alert(`Welcome ${user.email}`);
     // take user up tp App
     props.handleAddUser(user);
-    const queryRefresh = await fetch("/api/v1/events");
+    const queryRefresh = await fetch("/v1/events");
     props.onhandleUpdateEvents(await queryRefresh.json());
   }
 
@@ -91,7 +91,7 @@ fields=id,name,email,picture.width(640).height(640)`);
           uid: id,
         },
       };
-      const queryAppToken = await fetch("/api/v1/findCreateFbUser", {
+      const queryAppToken = await fetch("/v1/findCreateFbUser", {
         method: "POST",
         body: JSON.stringify(fbUserData),
         headers: { "Content-Type": "application/json" },
@@ -100,7 +100,7 @@ fields=id,name,email,picture.width(640).height(640)`);
         const { access_token } = await queryAppToken.json();
         console.log(access_token);
         try {
-          const getCurrentUser = await fetch("/api/v1/profile", {
+          const getCurrentUser = await fetch("/v1/profile", {
             headers: { authorization: "Bearer " + access_token },
           });
           const currentUser = await getCurrentUser.json();
@@ -126,7 +126,7 @@ fields=id,name,email,picture.width(640).height(640)`);
     if (method === "formUp") {
       // 1- check if user already exists with these credentials
       try {
-        const getUserToken = await fetch("/api/v1/getUserToken", {
+        const getUserToken = await fetch("/v1/getUserToken", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -136,7 +136,7 @@ fields=id,name,email,picture.width(640).height(640)`);
 
         if (getUserToken.ok) {
           const { jwt } = await getUserToken.json();
-          const getCurrentUser = await fetch("/api/v1/profile", {
+          const getCurrentUser = await fetch("/v1/profile", {
             headers: { authorization: "Bearer " + jwt },
           });
           const currentUser = await getCurrentUser.json();
@@ -152,7 +152,7 @@ fields=id,name,email,picture.width(640).height(640)`);
           const userData = JSON.stringify({
             user: { email: response.email, password: response.password },
           });
-          const checkUser = await fetch("/api/v1/createUser", {
+          const checkUser = await fetch("/v1/createUser", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: userData,
@@ -160,7 +160,7 @@ fields=id,name,email,picture.width(640).height(640)`);
 
           if (checkUser.ok) {
             try {
-              const getUserToken = await fetch("/api/v1/getUserToken", {
+              const getUserToken = await fetch("/v1/getUserToken", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -173,7 +173,7 @@ fields=id,name,email,picture.width(640).height(640)`);
                 const { jwt } = await getUserToken.json();
 
                 // check in db if email_confirmed with the token
-                const getCurrentUser = await fetch("/api/v1/profile", {
+                const getCurrentUser = await fetch("/v1/profile", {
                   headers: { authorization: "Bearer " + jwt },
                 });
                 const currentUser = await getCurrentUser.json();
@@ -202,7 +202,7 @@ fields=id,name,email,picture.width(640).height(640)`);
     if (method === "formIn") {
       // check user with the jwt token return from the backend
       try {
-        const getUserToken = await fetch("/api/v1/getUserToken", {
+        const getUserToken = await fetch("/v1/getUserToken", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -213,7 +213,7 @@ fields=id,name,email,picture.width(640).height(640)`);
         if (getUserToken.ok) {
           // need to have mail checked to enter
           const { jwt } = await getUserToken.json();
-          const getCurrentUser = await fetch("/api/v1/profile", {
+          const getCurrentUser = await fetch("/v1/profile", {
             headers: { authorization: "Bearer " + jwt },
           });
           const currentUser = await getCurrentUser.json();
