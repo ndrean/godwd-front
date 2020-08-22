@@ -76,14 +76,17 @@ function CardList({ user, users, events, ...props }) {
 
     if (window.confirm("Confirm removal?")) {
       try {
-        const query = await fetch("/v1/events/" + event.id, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            authorization: "Bearer " + props.token,
-          },
-        }); // then new updated rows
+        const query = await fetch(
+          process.env.REACT_APP_URL + "/v1/events/" + event.id,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              authorization: "Bearer " + props.token,
+            },
+          }
+        ); // then new updated rows
         if (query.status !== 200) {
           return returnUnauthorized();
         }
@@ -298,7 +301,7 @@ function CardList({ user, users, events, ...props }) {
         owner: event.user.email,
         event: event,
       });
-      await fetch("/v1/pushDemand", {
+      await fetch(process.env.REACT_APP_URL + "/v1/pushDemand", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -307,7 +310,9 @@ function CardList({ user, users, events, ...props }) {
         body: demand,
       });
       window.alert("Mail sent");
-      const responseEvents = await fetch("v1/events");
+      const responseEvents = await fetch(
+        process.env.REACT_APP_URL + "v1/events"
+      );
       if (responseEvents.ok) {
         const dataEvents = await responseEvents.json();
         props.onhandleUpdateEvents(dataEvents);

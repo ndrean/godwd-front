@@ -60,7 +60,7 @@ function LoginForm({ user, ...props }) {
     alert(`Welcome ${user.email}`);
     // take user up tp App
     props.handleAddUser(user);
-    const queryRefresh = await fetch("/v1/events");
+    const queryRefresh = await fetch(process.env.REACT_APP_URL + "/v1/events");
     props.onhandleUpdateEvents(await queryRefresh.json());
   }
 
@@ -91,18 +91,24 @@ fields=id,name,email,picture.width(640).height(640)`);
           uid: id,
         },
       };
-      const queryAppToken = await fetch("/v1/findCreateFbUser", {
-        method: "POST",
-        body: JSON.stringify(fbUserData),
-        headers: { "Content-Type": "application/json" },
-      });
+      const queryAppToken = await fetch(
+        process.env.REACT_APP_URL + "/v1/findCreateFbUser",
+        {
+          method: "POST",
+          body: JSON.stringify(fbUserData),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       if (queryAppToken.ok) {
         const { access_token } = await queryAppToken.json();
         console.log(access_token);
         try {
-          const getCurrentUser = await fetch("/v1/profile", {
-            headers: { authorization: "Bearer " + access_token },
-          });
+          const getCurrentUser = await fetch(
+            process.env.REACT_APP_URL + "/v1/profile",
+            {
+              headers: { authorization: "Bearer " + access_token },
+            }
+          );
           const currentUser = await getCurrentUser.json();
           console.log(currentUser);
 
@@ -126,19 +132,25 @@ fields=id,name,email,picture.width(640).height(640)`);
     if (method === "formUp") {
       // 1- check if user already exists with these credentials
       try {
-        const getUserToken = await fetch("/v1/getUserToken", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: authData,
-        });
+        const getUserToken = await fetch(
+          process.env.REACT_APP_URL + "/v1/getUserToken",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: authData,
+          }
+        );
 
         if (getUserToken.ok) {
           const { jwt } = await getUserToken.json();
-          const getCurrentUser = await fetch("/v1/profile", {
-            headers: { authorization: "Bearer " + jwt },
-          });
+          const getCurrentUser = await fetch(
+            process.env.REACT_APP_URL + "/v1/profile",
+            {
+              headers: { authorization: "Bearer " + jwt },
+            }
+          );
           const currentUser = await getCurrentUser.json();
           if (currentUser.confirm_email && !currentUser.confirm_token) {
             console.log("__confirmed__");
@@ -152,30 +164,39 @@ fields=id,name,email,picture.width(640).height(640)`);
           const userData = JSON.stringify({
             user: { email: response.email, password: response.password },
           });
-          const checkUser = await fetch("/v1/createUser", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: userData,
-          });
+          const checkUser = await fetch(
+            process.env.REACT_APP_URL + "/v1/createUser",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: userData,
+            }
+          );
 
           if (checkUser.ok) {
             try {
-              const getUserToken = await fetch("/v1/getUserToken", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: authData,
-              });
+              const getUserToken = await fetch(
+                process.env.REACT_APP_URL + "/v1/getUserToken",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: authData,
+                }
+              );
 
               if (getUserToken.ok) {
                 console.log("updated in db, waiting for mail confirmation");
                 const { jwt } = await getUserToken.json();
 
                 // check in db if email_confirmed with the token
-                const getCurrentUser = await fetch("/v1/profile", {
-                  headers: { authorization: "Bearer " + jwt },
-                });
+                const getCurrentUser = await fetch(
+                  process.env.REACT_APP_URL + "/v1/profile",
+                  {
+                    headers: { authorization: "Bearer " + jwt },
+                  }
+                );
                 const currentUser = await getCurrentUser.json();
 
                 if (currentUser.confirm_mail && !currentUser.confirm_token) {
@@ -202,20 +223,26 @@ fields=id,name,email,picture.width(640).height(640)`);
     if (method === "formIn") {
       // check user with the jwt token return from the backend
       try {
-        const getUserToken = await fetch("/v1/getUserToken", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: authData,
-        });
+        const getUserToken = await fetch(
+          process.env.REACT_APP_URL + "/v1/getUserToken",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: authData,
+          }
+        );
 
         if (getUserToken.ok) {
           // need to have mail checked to enter
           const { jwt } = await getUserToken.json();
-          const getCurrentUser = await fetch("/v1/profile", {
-            headers: { authorization: "Bearer " + jwt },
-          });
+          const getCurrentUser = await fetch(
+            process.env.REACT_APP_URL + "/v1/profile",
+            {
+              headers: { authorization: "Bearer " + jwt },
+            }
+          );
           const currentUser = await getCurrentUser.json();
           if (currentUser.confirm_email && !currentUser.confirm_token) {
             saveUser(jwt, currentUser);
