@@ -5,7 +5,7 @@ import MyNavBar from "./MyNavBar";
 import CardList from "./CardList";
 import DisplayMap from "../geoloc/MyMap";
 
-import { eventsEndPoint, usersEndPoint } from "../helpers/endpoints";
+//import { eventsEndPoint, usersEndPoint } from "../helpers/endpoints";
 import "../index.css";
 
 export default function App() {

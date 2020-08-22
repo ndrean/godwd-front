@@ -30,7 +30,7 @@ const redIcon = new L.Icon({
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
 });
-
+/*
 const kiteIcon = new L.Icon({
   iconUrl: "../assets/kiteIcon.png",
   iconSize: [25, 41],
@@ -38,5 +38,6 @@ const kiteIcon = new L.Icon({
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
 });
+*/
 
 export { redIcon, greenIcon, blueIcon };
