@@ -77,7 +77,7 @@ function CardList({ user, users, events, ...props }) {
     if (window.confirm("Confirm removal?")) {
       try {
         const query = await fetch(
-          process.env.REACT_APP_URL + "/v1/events/" + event.id,
+          process.env.REACT_APP_URL + "/events/" + event.id,
           {
             method: "DELETE",
             headers: {
@@ -301,7 +301,7 @@ function CardList({ user, users, events, ...props }) {
         owner: event.user.email,
         event: event,
       });
-      await fetch(process.env.REACT_APP_URL + "/v1/pushDemand", {
+      await fetch(process.env.REACT_APP_URL + "/pushDemand", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -310,9 +310,7 @@ function CardList({ user, users, events, ...props }) {
         body: demand,
       });
       window.alert("Mail sent");
-      const responseEvents = await fetch(
-        process.env.REACT_APP_URL + "v1/events"
-      );
+      const responseEvents = await fetch(process.env.REACT_APP_URL + "/events");
       if (responseEvents.ok) {
         const dataEvents = await responseEvents.json();
         props.onhandleUpdateEvents(dataEvents);

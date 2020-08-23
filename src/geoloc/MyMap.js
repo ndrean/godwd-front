@@ -223,7 +223,7 @@ export default function DisplayMap(props) {
   React.useEffect(() => {
     console.log("_fetch Events_");
     const markLayerRef = markersLayer.current;
-    fetch(process.env.REACT_APP_URL + "/v1/events")
+    fetch(process.env.REACT_APP_URL + "/events")
       .then((res) => res.json())
       .then((res) => {
         mapRef.current.removeLayer(markersLayer.current);

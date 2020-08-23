@@ -60,7 +60,7 @@ function LoginForm({ user, ...props }) {
     alert(`Welcome ${user.email}`);
     // take user up tp App
     props.handleAddUser(user);
-    const queryRefresh = await fetch(process.env.REACT_APP_URL + "/v1/events");
+    const queryRefresh = await fetch(process.env.REACT_APP_URL + "/events");
     props.onhandleUpdateEvents(await queryRefresh.json());
   }
 
@@ -92,7 +92,7 @@ fields=id,name,email,picture.width(640).height(640)`);
         },
       };
       const queryAppToken = await fetch(
-        process.env.REACT_APP_URL + "/v1/findCreateFbUser",
+        process.env.REACT_APP_URL + "/findCreateFbUser",
         {
           method: "POST",
           body: JSON.stringify(fbUserData),
@@ -104,7 +104,7 @@ fields=id,name,email,picture.width(640).height(640)`);
         console.log(access_token);
         try {
           const getCurrentUser = await fetch(
-            process.env.REACT_APP_URL + "/v1/profile",
+            process.env.REACT_APP_URL + "/profile",
             {
               headers: { authorization: "Bearer " + access_token },
             }
@@ -133,7 +133,7 @@ fields=id,name,email,picture.width(640).height(640)`);
       // 1- check if user already exists with these credentials
       try {
         const getUserToken = await fetch(
-          process.env.REACT_APP_URL + "/v1/getUserToken",
+          process.env.REACT_APP_URL + "/getUserToken",
           {
             method: "POST",
             headers: {
@@ -146,7 +146,7 @@ fields=id,name,email,picture.width(640).height(640)`);
         if (getUserToken.ok) {
           const { jwt } = await getUserToken.json();
           const getCurrentUser = await fetch(
-            process.env.REACT_APP_URL + "/v1/profile",
+            process.env.REACT_APP_URL + "/profile",
             {
               headers: { authorization: "Bearer " + jwt },
             }
@@ -165,7 +165,7 @@ fields=id,name,email,picture.width(640).height(640)`);
             user: { email: response.email, password: response.password },
           });
           const checkUser = await fetch(
-            process.env.REACT_APP_URL + "/v1/createUser",
+            process.env.REACT_APP_URL + "/createUser",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -176,7 +176,7 @@ fields=id,name,email,picture.width(640).height(640)`);
           if (checkUser.ok) {
             try {
               const getUserToken = await fetch(
-                process.env.REACT_APP_URL + "/v1/getUserToken",
+                process.env.REACT_APP_URL + "/getUserToken",
                 {
                   method: "POST",
                   headers: {
@@ -192,7 +192,7 @@ fields=id,name,email,picture.width(640).height(640)`);
 
                 // check in db if email_confirmed with the token
                 const getCurrentUser = await fetch(
-                  process.env.REACT_APP_URL + "/v1/profile",
+                  process.env.REACT_APP_URL + "/profile",
                   {
                     headers: { authorization: "Bearer " + jwt },
                   }
@@ -224,7 +224,7 @@ fields=id,name,email,picture.width(640).height(640)`);
       // check user with the jwt token return from the backend
       try {
         const getUserToken = await fetch(
-          process.env.REACT_APP_URL + "/v1/getUserToken",
+          process.env.REACT_APP_URL + "/getUserToken",
           {
             method: "POST",
             headers: {
@@ -238,7 +238,7 @@ fields=id,name,email,picture.width(640).height(640)`);
           // need to have mail checked to enter
           const { jwt } = await getUserToken.json();
           const getCurrentUser = await fetch(
-            process.env.REACT_APP_URL + "/v1/profile",
+            process.env.REACT_APP_URL + "/profile",
             {
               headers: { authorization: "Bearer " + jwt },
             }

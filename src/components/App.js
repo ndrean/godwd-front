@@ -21,7 +21,7 @@ export default function App() {
       setLoading(true);
       try {
         const responseEvents = await fetch(
-          process.env["REACT_APP_URL"] + "/v1/events"
+          process.env.REACT_APP_URL + "/events"
         );
         if (responseEvents.ok) {
           const dataEvents = await responseEvents.json();
@@ -40,9 +40,7 @@ export default function App() {
     (async function fetchData() {
       setLoading(true);
       try {
-        const responseUsers = await fetch(
-          process.env["REACT_APP_URL"] + "/v1/users"
-        );
+        const responseUsers = await fetch(process.env.REACT_APP_URL + "/users");
         if (responseUsers.ok) {
           const dataUsers = await responseUsers.json();
           setUsers(dataUsers);
